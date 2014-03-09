@@ -57,18 +57,25 @@
             return resultString;
         }
         function makeEffects($elements){
-            var delay = intervalBetweenFalls;
+            var currentIndex = 0;
             spansIndexes = createIndexes($elements.length).shuffle();
-            setTimeout(function(){
-                for(var i = 0; i < $elements.length; i++){
-                    $elements.eq(spansIndexes[i]).css({
-                        'transition':'all ' + fallDuration + 'ms linear ' + delay + 'ms',
+
+            (function make(){
+
+                setTimeout(function (){
+                    $elements.eq(spansIndexes[currentIndex]).css({
+                        'transition':'all ' + fallDuration + 'ms ease-out 0ms',
                         'transform':'translate(0px, 0px)',
                         'opacity':'1'
                     });
-                    delay += intervalBetweenFalls;
-                }
-            },0);
+                    currentIndex++;
+                    if(currentIndex == $elements.length){return;}
+                    make();
+
+                },intervalBetweenFalls);
+
+
+            })();
 
         }
         function setArrayShuffleMethod(){
@@ -89,6 +96,6 @@
 
     };
 
-    $('.effector').fallingText(50, 550);
+    $('.effector').fallingText(30, 600);
 
 })(jQuery);

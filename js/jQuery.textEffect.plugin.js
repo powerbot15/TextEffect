@@ -13,8 +13,11 @@
             var startString = $(this).text(),
                 resultString='',
                 wasUnknownSymbol = false;
+            console.time("Start");
             resultString = prepareString(startString);
+            console.timeEnd("End");
             $(this).html(resultString);
+
         });
 
         $spansForEffect = $('.effect-parts');
@@ -45,10 +48,6 @@
             var resultString = '',
                 incomingString = text.trim();
             for(var i = 0; i < incomingString.length; i++){
-                if(incomingString.charCodeAt(i) == 10){
-                    i++;
-                    while((incomingString.charCodeAt(i) == 32)||(incomingString.charCodeAt(i) == 10)){i++};
-                }
                 if(incomingString.charCodeAt(i) == 32){
                     resultString += '<span class="effect-parts">&nbsp;</span>';
                 }
@@ -96,6 +95,6 @@
 
     };
 
-    $('.effector').fallingText(30, 600);
+    $('.effector').fallingText(50, 500);
 
 })(jQuery);

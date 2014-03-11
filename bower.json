@@ -1,0 +1,14 @@
+{
+  "name": "TextEffect",
+  "version": "0.0.1",
+  "homepage": "https://github.com/powerbot15/TextEffect",
+  "authors": [
+    "powerbot15 <powerbot15@gmail.com>"
+  ],
+  "main": "config-and-run.js",
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "~2.1.0",
+    "requirejs": "~2.1.11"
+  }
+}

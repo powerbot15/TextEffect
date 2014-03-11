@@ -1,4 +1,4 @@
-(function($){
+define(['jquery'], function($){
 
     $.prototype.fallingText = function(intervalBetweenFalls, fallDuration){
 
@@ -95,6 +95,7 @@
 
     };
 
-    $('.effector').fallingText(60, 600);
+});
 
-})(jQuery);
+
+

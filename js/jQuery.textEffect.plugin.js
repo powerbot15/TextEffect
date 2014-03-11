@@ -1,29 +1,19 @@
 (function($){
 
     $.prototype.fallingText = function(intervalBetweenFalls, fallDuration){
-        var $spansForEffect,
-            spansIndexes,
-            currentIndex = 0,
-            counter = 0;
-
 
         setArrayShuffleMethod();
 
         this.each(function(){
-            var startString = $(this).text(),
-                resultString='',
-                wasUnknownSymbol = false;
-            console.time("Start");
-            resultString = prepareString(startString);
-            console.timeEnd("End");
-            $(this).html(resultString);
+            var $spansForEffect;
+
+            prepareElementForEffects($(this));
+            $spansForEffect = $(this).find('.effect-parts');
+            prepareForEffects($spansForEffect);
+            makeEffects($spansForEffect);
 
         });
 
-        $spansForEffect = $('.effect-parts');
-
-        prepareForEffects($spansForEffect);
-        makeEffects($spansForEffect);
 
         return this;
 
@@ -44,26 +34,36 @@
             }
             return resultArray;
         }
-        function prepareString(text){
-            var resultString = '',
-                incomingString = text.trim();
+        function prepareElementForEffects(element){
+            var
+                effectsElement = $('<span>'),
+                incomingString = (element.text()).trim();
+            element.empty();
+            effectsElement.addClass('effect-parts');
+            console.log(effectsElement);
             for(var i = 0; i < incomingString.length; i++){
+                var currentSpan = effectsElement.clone();
+                console.log(currentSpan);
                 if(incomingString.charCodeAt(i) == 32){
-                    resultString += '<span class="effect-parts">&nbsp;</span>';
+                    currentSpan.html('&nbsp;');
                 }
-                resultString += '<span class="effect-parts">' + incomingString.charAt(i) + '</span>';
+                else{
+                    currentSpan.text(incomingString.charAt(i));
+                }
+                element.append(currentSpan);
             }
-            return resultString;
+            return element;
         }
         function makeEffects($elements){
-            var currentIndex = 0;
+            var currentIndex = 0,
+                spansIndexes;
             spansIndexes = createIndexes($elements.length).shuffle();
 
             (function make(){
 
                 setTimeout(function (){
                     $elements.eq(spansIndexes[currentIndex]).css({
-                        'transition':'all ' + fallDuration + 'ms ease-out 0ms',
+                        'transition':'all ' + fallDuration + 'ms linear 0ms',
                         'transform':'translate(0px, 0px)',
                         'opacity':'1'
                     });
@@ -95,6 +95,6 @@
 
     };
 
-    $('.effector').fallingText(50, 500);
+    $('.effector').fallingText(60, 600);
 
 })(jQuery);

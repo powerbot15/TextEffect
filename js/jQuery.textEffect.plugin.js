@@ -5,28 +5,34 @@ define(['jquery'], function($){
         setArrayShuffleMethod();
 
         this.each(function(){
+
             var $spansForEffect;
 
             prepareElementForEffects($(this));
+
             $spansForEffect = $(this).find('.effect-parts');
-            prepareForEffects($spansForEffect);
-            makeEffects($spansForEffect);
+
+            prepareSpansForEffects($spansForEffect);
+
+            makeSpansEffects($spansForEffect);
 
         });
 
 
         return this;
 
-        function prepareForEffects($text){
+        function prepareSpansForEffects($text){
             $text.css({
                 'display':'inline-block',
                 'transform':'translate(0px, -100px)',
                 'opacity':'0'
             });
         }
+
         function getRandomInt(min, max){
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
+
         function createIndexes(count){
             var resultArray = [], i;
             for(i = 0; i < count; i++){
@@ -34,16 +40,15 @@ define(['jquery'], function($){
             }
             return resultArray;
         }
+
         function prepareElementForEffects(element){
             var
-                effectsElement = $('<span>'),
+                effectsSpantModel = $('<span>'),
                 incomingString = (element.text()).trim();
             element.empty();
-            effectsElement.addClass('effect-parts');
-            console.log(effectsElement);
+            effectsSpantModel.addClass('effect-parts');
             for(var i = 0; i < incomingString.length; i++){
-                var currentSpan = effectsElement.clone();
-                console.log(currentSpan);
+                var currentSpan = effectsSpantModel.clone();
                 if(incomingString.charCodeAt(i) == 32){
                     currentSpan.html('&nbsp;');
                 }
@@ -54,12 +59,13 @@ define(['jquery'], function($){
             }
             return element;
         }
-        function makeEffects($elements){
+
+        function makeSpansEffects($elements){
             var currentIndex = 0,
                 spansIndexes;
             spansIndexes = createIndexes($elements.length).shuffle();
 
-            (function make(){
+            (function makeEffects(){
 
                 setTimeout(function (){
                     $elements.eq(spansIndexes[currentIndex]).css({
@@ -68,28 +74,29 @@ define(['jquery'], function($){
                         'opacity':'1'
                     });
                     currentIndex++;
+
                     if(currentIndex == $elements.length){return;}
-                    make();
+
+                    makeEffects();
 
                 },intervalBetweenFalls);
-
 
             })();
 
         }
         function setArrayShuffleMethod(){
             Array.prototype.shuffle = function(){
-                var
-                    randomIndex,
+                var randomIndex,
                     exchangeVar,
-                    countOfElements = this.length;
+                    elements = this,
+                    countOfElements = elements.length;
                 for(var i = 0; i < countOfElements; i++){
                     randomIndex = getRandomInt(0, countOfElements - 1);
-                    exchangeVar = this[randomIndex];
-                    this[randomIndex] = this[i];
-                    this[i] = exchangeVar;
+                    exchangeVar = elements[randomIndex];
+                    elements[randomIndex] = elements[i];
+                    elements[i] = exchangeVar;
                 }
-                return this;
+                return elements;
             };
         }
 
